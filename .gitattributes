@@ -1,0 +1,55 @@
+# Unreal Engine 5 Git LFS configuration
+
+# Track Unreal binary assets
+*.uasset filter=lfs diff=lfs merge=lfs -text
+*.umap filter=lfs diff=lfs merge=lfs -text
+*.upack filter=lfs diff=lfs merge=lfs -text
+
+# Track audio/video assets
+*.wav filter=lfs diff=lfs merge=lfs -text
+*.mp3 filter=lfs diff=lfs merge=lfs -text
+*.ogg filter=lfs diff=lfs merge=lfs -text
+*.flac filter=lfs diff=lfs merge=lfs -text
+*.mp4 filter=lfs diff=lfs merge=lfs -text
+*.mov filter=lfs diff=lfs merge=lfs -text
+*.avi filter=lfs diff=lfs merge=lfs -text
+
+# Track 3D models and animations
+*.fbx filter=lfs diff=lfs merge=lfs -text
+*.blend filter=lfs diff=lfs merge=lfs -text
+*.maya filter=lfs diff=lfs merge=lfs -text
+*.max filter=lfs diff=lfs merge=lfs -text
+
+# Track textures and images
+*.png filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
+*.jpeg filter=lfs diff=lfs merge=lfs -text
+*.tga filter=lfs diff=lfs merge=lfs -text
+*.tif filter=lfs diff=lfs merge=lfs -text
+*.tiff filter=lfs diff=lfs merge=lfs -text
+*.bmp filter=lfs diff=lfs merge=lfs -text
+*.exr filter=lfs diff=lfs merge=lfs -text
+*.hdr filter=lfs diff=lfs merge=lfs -text
+*.psd filter=lfs diff=lfs merge=lfs -text
+
+# Track compiled shaders or caches if needed
+*.ush filter=lfs diff=lfs merge=lfs -text
+*.usf filter=lfs diff=lfs merge=lfs -text
+
+# Ignore text-based files from LFS (keep as normal text in Git)
+*.ini text
+*.txt text
+*.json text
+*.csv text
+*.uplugin text
+*.uproject text
+*.xml text
+*.bat text
+*.sh text
+*.py text
+*.cs text
+*.cpp text
+*.h text
+
+# Force Git to normalize line endings to LF in repo, CRLF in Windows
+* text=auto
