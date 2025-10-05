@@ -40,6 +40,7 @@ protected:
 
 	void MoveForward(const FInputActionValue& Value);
 	void Turn(const FInputActionValue& Value);
+	void BegingJump();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UCameraComponent* CameraComp;
@@ -53,6 +54,18 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
 	bool IsJumping;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
+	bool IsRuning;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
+	float Speed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
+	int LevelOfSpeed;
+	float AxisValue;
+
+	float CurrentTargetSpeed;
+	bool UpChangeVelocity;
+	bool DownChangeVelocity;
 
 public:	
 	// Called every frame
@@ -61,4 +74,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual FVector GetPawnViewLocation() const override;
 
+	void SetSpeedLevel(int32 KickCount);
+
+	UFUNCTION(BlueprintCallable)
+	void OnAnimNotifyKick();
 };

@@ -55,6 +55,15 @@ void ASB_PlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	AddMovementInput(GetActorForwardVector(), Speed);
+
+	float TargetSpeed = CurrentTargetSpeed;
+	float CurrentSpeed = GetCharacterMovement()->MaxWalkSpeed;
+
+	float InterpSpeed = 5.0f;
+
+	float NewSpeed = FMath::FInterpTo(CurrentSpeed, TargetSpeed, DeltaTime, InterpSpeed);
+	GetCharacterMovement()->MaxWalkSpeed = FMath::FInterpTo(CurrentSpeed, TargetSpeed, DeltaTime, InterpSpeed);
 
 }
 
@@ -67,20 +76,38 @@ void ASB_PlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	EnhancedInput->BindAction(MoveForwardAction, ETriggerEvent::Triggered, this, &ASB_PlayerCharacter::MoveForward);
 	EnhancedInput->BindAction(TurnAction, ETriggerEvent::Triggered, this, &ASB_PlayerCharacter::Turn);
-	EnhancedInput->BindAction(JumpAction, ETriggerEvent::Started, this, &ASB_PlayerCharacter::Jump);
+
+	EnhancedInput->BindAction(JumpAction, ETriggerEvent::Started, this, &ASB_PlayerCharacter::BegingJump);
+	EnhancedInput->BindAction(JumpAction, ETriggerEvent::Completed, this, &ASB_PlayerCharacter::BegingJump);
 
 }
 
 void ASB_PlayerCharacter::MoveForward(const FInputActionValue& Value)
 {
-	float AxisValue = Value.Get<float>();
-	AddMovementInput(GetActorForwardVector(), AxisValue);
+	AxisValue = Value.Get<float>();	
+	
+	if (AxisValue > 0 && !UpChangeVelocity)
+	{
+		UpChangeVelocity = true;
+		IsRuning = true;
+	}
+	if (AxisValue < 0 && !DownChangeVelocity)
+	{
+		DownChangeVelocity = true;
+		//IsRuning = false;
+	}
+	
 }
 
 
 void ASB_PlayerCharacter::Turn(const FInputActionValue& Value)
 {
 	AddControllerYawInput(Value.Get<float>() / 2);
+}
+
+void ASB_PlayerCharacter::BegingJump()
+{
+ //	Jump();
 }
 
 
@@ -92,6 +119,36 @@ FVector ASB_PlayerCharacter::GetPawnViewLocation() const
 	}
 
 	return Super::GetPawnViewLocation();
+}
+
+
+
+void ASB_PlayerCharacter::SetSpeedLevel(int32 KickCount)
+{
+	switch (KickCount)
+	{
+	case 0: CurrentTargetSpeed = 0.0f; Speed = 0; break;
+	case 1: CurrentTargetSpeed = 700.0f; Speed = 1; break;
+	case 2: CurrentTargetSpeed = 1200.0f; Speed = 1; break;
+	case 3: CurrentTargetSpeed = 1500.0f; Speed = 1; break;
+	default: CurrentTargetSpeed = 600.0f; Speed = 1; break;
+	}
+}
+
+void ASB_PlayerCharacter::OnAnimNotifyKick()
+{
+	if (UpChangeVelocity && LevelOfSpeed < 3)
+	{
+		LevelOfSpeed++;
+		UpChangeVelocity = false;
+	}
+	else if (DownChangeVelocity && LevelOfSpeed > 0)
+	{
+		LevelOfSpeed--;
+		DownChangeVelocity = false;
+	}
+
+	SetSpeedLevel(LevelOfSpeed);
 }
 
 
