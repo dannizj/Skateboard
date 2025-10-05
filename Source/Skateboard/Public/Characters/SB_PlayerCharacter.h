@@ -51,8 +51,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Player")
 	float DefaultFOV;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
-	bool IsJumping;
+	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
 	bool IsRuning;
@@ -67,6 +66,9 @@ protected:
 	bool UpChangeVelocity;
 	bool DownChangeVelocity;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
+	int Points;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -78,4 +80,13 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void OnAnimNotifyKick();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
+	bool IsJumping;
+
+	
+
+	int GetScore();
+	void SetScore(int value);
+
 };

@@ -15,10 +15,8 @@
 // Sets default values
 ASB_PlayerCharacter::ASB_PlayerCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	//create camera and spring
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArmComp->bUsePawnControlRotation = true;
 	SpringArmComp->SetupAttachment(RootComponent);
@@ -36,7 +34,7 @@ ASB_PlayerCharacter::ASB_PlayerCharacter()
 void ASB_PlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	// Added mapping context by scripting
+
 	if (APlayerController* PC = Cast<APlayerController>(Controller))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
@@ -94,7 +92,6 @@ void ASB_PlayerCharacter::MoveForward(const FInputActionValue& Value)
 	if (AxisValue < 0 && !DownChangeVelocity)
 	{
 		DownChangeVelocity = true;
-		//IsRuning = false;
 	}
 	
 }
@@ -149,6 +146,16 @@ void ASB_PlayerCharacter::OnAnimNotifyKick()
 	}
 
 	SetSpeedLevel(LevelOfSpeed);
+}
+
+int ASB_PlayerCharacter::GetScore()
+{
+	return Points;
+}
+
+void ASB_PlayerCharacter::SetScore(int value)
+{
+	Points += value;
 }
 
 
